@@ -1,0 +1,79 @@
+name: Release Latest Changes
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    # The "_DEFAULT" env vars below allow this to work out-of-the-box under "chainguard-dev" org.
+    # The "_OVERRIDE" env vars below override the default ones, and are sourced from GitHub secrets.
+    # If running this workflow from a fork, you must set the following secrets in your repository settings:
+    # PROJECT_ID, WORKLOAD_IDENTITY_PROVIDER, SERVICE_ACCOUNT_NAME, CLUSTER_NAME, CLUSTER_LOCATION
+    env:
+      # Uncomment to enable signing and add SBOM
+      ENABLE_SIGNING: true
+
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v1
+        with:
+          go-version: 1.18
+          check-latest: true
+      - uses: imjasonh/setup-ko@v0.4
+        with:
+          version: v0.11.2
+
+      - name: Build the image
+        env:
+          KO_DOCKER_REPO: gcr.io/${{ env.PROJECT_ID }}/demo-app
+        run: |
+          SBOM=cyclonedx
+          if [ -z "$ENABLE_SIGNING" ]; then
+            SBOM=none
+          fi
+          ko build --bare --sbom=$SBOM --image-refs=ko.images .
+
+      - uses: sigstore/cosign-installer@main
+        if: env.ENABLE_SIGNING == 'true'
+        with:
+          cosign-release: 'v1.9.0'
+
+      - name: Sign the container image
+        if: env.ENABLE_SIGNING == 'true'
+        env:
+          COSIGN_EXPERIMENTAL: "true"
+        run: cosign sign $(cat ko.images) --force
+
+      - name: Image Env Var
+        run: |
+          echo "IMAGE=$(cat ko.images)" >> $GITHUB_ENV
+
+      - uses: strongjz/actions/vul-scans@scans
+        with:
+          registry: ${{ inputs.registry }}
+          username: ${{ inputs.username }}
+          password: ${{ inputs.token }}
+          image: ${{ env.IMAGE }}
+
+      # Post to slack when things fail.
+      - if: ${{ failure() }}
+        uses: rtCamp/action-slack-notify@v2.2.0
+        env:
+          SLACK_ICON: http://github.com/chainguardian.png?size=48
+          SLACK_USERNAME: chainguardian
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_CHANNEL: james-test-channel
+          SLACK_COLOR: '#8E1600'
+          MSG_MINIMAL: 'true'
+          SLACK_TITLE: Releasing ${{ github.repository }} failed.
+          SLACK_MESSAGE: |
+            For detailed logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
