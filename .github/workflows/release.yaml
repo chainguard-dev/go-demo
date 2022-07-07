@@ -8,8 +8,8 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  username: ${{ github.actor }}
-  password: ${{ GITHUB_TOKEN }}
+  USERNAME: ${{ github.actor }}
+  PASSWORD: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   release:
@@ -65,9 +65,9 @@ jobs:
 
       - uses: strongjz/actions/vul-scans@scans
         with:
-          registry: ${{ inputs.registry }}
-          username: ${{ inputs.username }}
-          password: ${{ inputs.password }}
+          registry: ${{ inputs.REGISTRY }}
+          username: ${{ inputs.USERNAME }}
+          password: ${{ inputs.PASSWORD }}
           image: ${{ env.IMAGE }}
 
       # Post to slack when things fail.
