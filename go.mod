@@ -1,3 +1,3 @@
-module github.com/chainguard-dev/gke-demo
+module github.com/strongjz/go-demo
 
 go 1.18

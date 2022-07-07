@@ -62,6 +62,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           image: ${{ env.IMAGE }}
+          SNYK_TOKEN: $${{ secrets.SNYK_TOKEN }}
 
       # Post to slack when things fail.
       - if: ${{ failure() }}
