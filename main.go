@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"go.uber.org/zap"
 	"log"
 	"net/http"
 	"os"
@@ -17,7 +19,30 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Print("helloworld: starting server...")
+	rawJSON := []byte(`{
+	  "level": "debug",
+	  "encoding": "json",
+	  "outputPaths": ["stdout", "/tmp/logs"],
+	  "errorOutputPaths": ["stderr"],
+	  "initialFields": {"foo": "bar"},
+	  "encoderConfig": {
+	    "messageKey": "message",
+	    "levelKey": "level",
+	    "levelEncoder": "lowercase"
+	  }
+	}`)
+
+	var cfg zap.Config
+	if err := json.Unmarshal(rawJSON, &cfg); err != nil {
+		panic(err)
+	}
+	logger, err := cfg.Build()
+	if err != nil {
+		panic(err)
+	}
+	defer logger.Sync()
+
+	logger.Info("helloworld: starting server")
 
 	http.HandleFunc("/", handler)
 
@@ -26,6 +51,11 @@ func main() {
 		port = "8080"
 	}
 
-	log.Printf("helloworld: listening on port %s", port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
+	logger.Info("helloworld: listening on port ", zap.String("port", port))
+
+	err = http.ListenAndServe(fmt.Sprintf(":%s", port), nil)
+	if err != nil {
+		logger.Fatal(err.Error())
+	}
+
 }
