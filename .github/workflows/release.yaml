@@ -58,7 +58,7 @@ jobs:
 
       - uses: strongjz/actions/vul-scans@scans
         with:
-          registry: ${{ inputs.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           image: ${{ env.IMAGE }}
