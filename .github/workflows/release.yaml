@@ -16,6 +16,7 @@ jobs:
       contents: read
       packages: write
       id-token: write
+      security-events: write
 
     env:
       # Uncomment to enable signing and add SBOM
