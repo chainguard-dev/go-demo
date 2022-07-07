@@ -63,6 +63,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           image: ${{ env.IMAGE }}
           SNYK_TOKEN: $${{ secrets.SNYK_TOKEN }}
+          UPLOAD_GITHUB_CODE: true
 
       # Post to slack when things fail.
       - if: ${{ failure() }}
