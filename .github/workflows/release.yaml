@@ -8,9 +8,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  VUL_IMAGE:
-    - vulhub/nginx:1.4.2
-    -
 
 jobs:
   release:
