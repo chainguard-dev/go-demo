@@ -8,6 +8,9 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  VUL_IMAGE:
+    - vulhub/nginx:1.4.2
+    -
 
 jobs:
   release:
@@ -57,7 +60,7 @@ jobs:
         run: |
           echo "IMAGE=$(cat ko.images)" >> $GITHUB_ENV
 
-      - uses: strongjz/actions/vul-scans@fd74566bda0bbfcf64f06802053aeabb3bbcc793
+      - uses: strongjz/actions/vul-scans@519603140be31204fa2ead11ed3ec61c78d2900d
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
