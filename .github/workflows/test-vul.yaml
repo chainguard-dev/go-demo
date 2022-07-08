@@ -31,6 +31,6 @@ jobs:
           SLACK_CHANNEL: james-test-channel
           SLACK_COLOR: '#8E1600'
           MSG_MINIMAL: 'true'
-          SLACK_TITLE: Releasing ${{ github.repository }} failed.
+          SLACK_TITLE: Testing Vulnerability scans failed.
           SLACK_MESSAGE: |
             For detailed logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
