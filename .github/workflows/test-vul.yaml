@@ -9,7 +9,7 @@ jobs:
   example_matrix:
     strategy:
       matrix:
-        images: ["vulhub/nginx:1.4.2", "ulhub/nginx:1.13.2", "vulhub/activemq:5.11.1"]
+        images: ["vulhub/nginx:1.4.2", "vulhub/nginx:1.13.2", "vulhub/activemq:5.11.1"]
     runs-on: ubuntu-latest
     steps:
       - uses: strongjz/actions/vul-scans@519603140be31204fa2ead11ed3ec61c78d2900d
