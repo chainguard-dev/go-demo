@@ -12,7 +12,7 @@ jobs:
         images: ["nginx:1.19"]
     runs-on: ubuntu-latest
     steps:
-      - uses: strongjz/actions/vul-scans@be0c3f6c4f9d651ac413d7915694b4e80aaf72e3
+      - uses: strongjz/actions/vul-scans@3ce443df0f6c5d0c549bd590196133f549c1342a
         id: scans
         with:
           registry: ghcr.io
