@@ -12,7 +12,7 @@ jobs:
         images: ["vulhub/nginx:1.4.2", "vulhub/nginx:1.13.2", "vulhub/activemq:5.11.1"]
     runs-on: ubuntu-latest
     steps:
-      - uses: strongjz/actions/vul-scans@ba7b3765ff9225ec31b3c45a454844538a2acb6f
+      - uses: strongjz/actions/vul-scans@8ef138151d5c9aad6376ebd722ec00ce3393d0d1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
