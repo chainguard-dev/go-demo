@@ -69,14 +69,10 @@ jobs:
 
       - name: Image Vunability scan output
         shell: bash
-        with:
-          SNYK_COUNT: $${{ steps.scans.outputs.SNYK_COUNT }}
-          GRYPE_COUNT: $${{ steps.scans.outputs.GRYPE_COUNT }}
-          TRIVY_COUNT: $${{ steps.scans.outputs.TRIVY_COUNT }}
         run: |
-          echo "Snyk Count: SNYK_COUNT"
-          echo "Grype Count: GRYPE_COUNT"
-          echo "Trivy Count: TRIVY_COUNT"
+          echo "Snyk Count: ${{ steps.scans.outputs.SNYK_COUNT }}"
+          echo "Grype Count: ${{ steps.scans.outputs.GRYPE_COUNT }}"
+          echo "Trivy Count: ${{ steps.scans.outputs.TRIVY_COUNT }}"
 
       - if: ${{ steps.scans.outputs.TRIVY_COUNT != '0' || steps.scans.outputs.GRYPE_COUNT != '0' || steps.scans.outputs.SNYK_COUNT != '0'  }}
         uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7
