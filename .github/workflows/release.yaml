@@ -57,7 +57,7 @@ jobs:
         run: |
           echo "IMAGE=$(cat ko.images)" >> $GITHUB_ENV
 
-      - uses: strongjz/actions/vul-scans@692ce40af169475718db0b323715453f0eab5f7a
+      - uses: strongjz/actions/vul-scans@6a6ca82c0ce76c986609f3b701ea98465dc7b53e
         id: scans
         with:
           registry: ghcr.io
@@ -70,11 +70,11 @@ jobs:
       - name: Image Vunability scan output
         shell: bash
         run: |
-          echo "Snyk Count: $${{ steps.scans.outputs.snyk }}"
-          echo "Grype Count $${{ steps.scans.outputs.grype }}"
-          echo "Trivy Count $${{ steps.scans.outputs.trivy }}"
+          echo "Snyk Count: $${{ steps.scans.outputs.SNYK_COUNT }}"
+          echo "Grype Count $${{ steps.scans.outputs.GRYPE_COUNT }}"
+          echo "Trivy Count $${{ steps.scans.outputs.TRIVY_COUNT }}"
 
-      - if: ${{ steps.scans.outputs.snyk != '0' || steps.scans.outputs.grype != '0' || steps.scans.outputs.trivy != '0'  }}
+      - if: ${{ steps.scans.outputs.TRIVY_COUNT != '0' || steps.scans.outputs.GRYPE_COUNT != '0' || steps.scans.outputs.SNYK_COUNT != '0'  }}
         uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7
         with:
           image: ${{ env.IMAGE }}

@@ -12,7 +12,8 @@ jobs:
         images: ["nginx:1.19"]
     runs-on: ubuntu-latest
     steps:
-      - uses: strongjz/actions/vul-scans@692ce40af169475718db0b323715453f0eab5f7a
+      - uses: strongjz/actions/vul-scans@6a6ca82c0ce76c986609f3b701ea98465dc7b53e
+        id: scans
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -21,7 +22,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           UPLOAD_GITHUB_CODE: true
 
-      - if: ${{ steps.scans.outputs.snyk != '0' || steps.scans.outputs.grype != '0' || steps.scans.outputs.trivy != '0' }}
+      - if: ${{ steps.scans.outputs.TRIVY_COUNT != '0' || steps.scans.outputs.GRYPE_COUNT != '0' || steps.scans.outputs.SNYK_COUNT != '0'  }}
         uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7
         with:
           image: ${{ env.IMAGE }}
