@@ -2,7 +2,7 @@
 go demo app
 
 
-### Trivy Scan and Attestation
+### Verify Attestation
 
 Cosign Verify 
 ```bash
