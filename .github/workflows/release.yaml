@@ -22,12 +22,13 @@ jobs:
       # Uncomment to enable signing and add SBOM
       ENABLE_SIGNING: true
 
-
     steps:
       - uses: actions/checkout@7884fcad6b5d53d10323aee724dc68d8b9096a2e
+
       - uses: actions/setup-go@0caeaed6fd66a828038c2da3c0f662a42862658f
         with:
           go-version: 1.18
+
       - uses: imjasonh/setup-ko@2c3450ca27f6e6f2b02e72a40f2163c281a1f675
         with:
           version: v0.11.2
@@ -57,7 +58,7 @@ jobs:
         run: |
           echo "IMAGE=$(cat ko.images)" >> $GITHUB_ENV
 
-      - uses: strongjz/actions/vul-scans@3ce443df0f6c5d0c549bd590196133f549c1342a
+      - uses: strongjz/actions/vul-scans@d1889c9a5da7bd1a9a44d2b7a9148109121d2b38
         id: scans
         with:
           registry: ghcr.io
@@ -68,31 +69,36 @@ jobs:
           UPLOAD_GITHUB_CODE: true
 
       - name: Image Vunability scan output
-        shell: bash
-        run: |
-          echo "Snyk Count: ${{ steps.scans.outputs.SNYK_COUNT }}"
-          echo "Grype Count: ${{ steps.scans.outputs.GRYPE_COUNT }}"
-          echo "Trivy Count: ${{ steps.scans.outputs.TRIVY_COUNT }}"
-
-      - if: ${{ steps.scans.outputs.TRIVY_COUNT != '0' || steps.scans.outputs.GRYPE_COUNT != '0' || steps.scans.outputs.SNYK_COUNT != '0'  }}
-        uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7
-        with:
-          image: ${{ env.IMAGE }}
+        env:
           SNYK_COUNT: $${{ steps.scans.outputs.SNYK_COUNT }}
           GRYPE_COUNT: $${{ steps.scans.outputs.GRYPE_COUNT }}
           TRIVY_COUNT: $${{ steps.scans.outputs.TRIVY_COUNT }}
+        run: |
+          echo "Image Vulnerability scan output" >> $GITHUB_STEP_SUMMARY
+          echo "Image ID: ${{ env.IMAGE }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Snyk Count: $${{ env.SNYK_COUNT }}" >> $GITHUB_STEP_SUMMARY
+          echo "Grype Count: ${{ env.GRYPE_COUNT }}" >> $GITHUB_STEP_SUMMARY
+          echo "Trivy Count: ${{ env.TRIVY_COUNT }}" >> $GITHUB_STEP_SUMMARY
+
+      - if: ${{ steps.scans.outputs.TRIVY_COUNT != '0' || steps.scans.outputs.GRYPE_COUNT != '0' || steps.scans.outputs.SNYK_COUNT != '0'  }}
+        uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7
         env:
+          IMAGE: ${{ env.IMAGE }}
+          SNYK_COUNT: $${{ steps.scans.outputs.SNYK_COUNT }}
+          GRYPE_COUNT: $${{ steps.scans.outputs.GRYPE_COUNT }}
+          TRIVY_COUNT: $${{ steps.scans.outputs.TRIVY_COUNT }}
           SLACK_ICON: http://github.com/chainguardian.png?size=48
           SLACK_USERNAME: chainguardian
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_CHANNEL: james-test-channel
           SLACK_COLOR: '#8E1600'
-          MSG_MINIMAL: 'true'
-          SLACK_TITLE: Releasing ${{ github.repository }} failed.
+          MSG_MINIMAL: 'false'
+          SLACK_TITLE: Vulnerability Report for ${{ github.repository }}.
           SLACK_MESSAGE: |
-            Snyk Count: $${{ steps.scans.outputs.snyk }}
-            Grype Count $${{ steps.scans.outputs.grype }}
-            Trivy Count $${{ steps.scans.outputs.trivy }}
+            Snyk Count: $${{ env.SNYK_COUNT }}
+            Grype Count: $${{ env.GRYPE_COUNT }}
+            Trivy Count: $${{ env.TRIVY_COUNT }}
             Image ID: ${{ env.IMAGE }}
             For detailed logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
