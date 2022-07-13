@@ -78,8 +78,8 @@ jobs:
           echo "Image ID: ${{ env.IMAGE }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Snyk Count: $${{ env.SNYK_COUNT }}" >> $GITHUB_STEP_SUMMARY
-          echo "Grype Count: ${{ env.GRYPE_COUNT }}" >> $GITHUB_STEP_SUMMARY
-          echo "Trivy Count: ${{ env.TRIVY_COUNT }}" >> $GITHUB_STEP_SUMMARY
+          echo "Grype Count: $${{ env.GRYPE_COUNT }}" >> $GITHUB_STEP_SUMMARY
+          echo "Trivy Count: $${{ env.TRIVY_COUNT }}" >> $GITHUB_STEP_SUMMARY
 
       - if: ${{ steps.scans.outputs.TRIVY_COUNT != '0' || steps.scans.outputs.GRYPE_COUNT != '0' || steps.scans.outputs.SNYK_COUNT != '0'  }}
         uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7
@@ -96,9 +96,9 @@ jobs:
           MSG_MINIMAL: 'false'
           SLACK_TITLE: Vulnerability Report for ${{ github.repository }}.
           SLACK_MESSAGE: |
-            Snyk Count: $${{ env.SNYK_COUNT }}
-            Grype Count: $${{ env.GRYPE_COUNT }}
-            Trivy Count: $${{ env.TRIVY_COUNT }}
+            Snyk Count: ${{ env.SNYK_COUNT }}
+            Grype Count: ${{ env.GRYPE_COUNT }}
+            Trivy Count: ${{ env.TRIVY_COUNT }}
             Image ID: ${{ env.IMAGE }}
             For detailed logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
