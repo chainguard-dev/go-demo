@@ -97,10 +97,10 @@ jobs:
           MSG_MINIMAL: 'false'
           SLACK_TITLE: Vulnerability Report for ${{ github.repository }}.
           SLACK_MESSAGE: |
-            Snyk Count: ${{ env.SNYK_COUNT }}
-            Grype Count: ${{ env.GRYPE_COUNT }}
-            Trivy Count: ${{ env.TRIVY_COUNT }}
-            Image ID: ${{ env.IMAGE }}
+            Snyk Count: $SNYK_COUNT
+            Grype Count: $GRYPE_COUNT
+            Trivy Count: $TRIVY_COUNT
+            Image ID: $IMAGE
             For detailed logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       # Post to slack when things fail.
