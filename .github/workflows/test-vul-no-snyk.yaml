@@ -26,8 +26,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
         image: ${{ matrix.images }}
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        RUN_SNYK: "true"
+        RUN_SNYK: "false"
         UPLOAD_GITHUB_CODE: "true"
 
     - name: Image Vunability scan output
