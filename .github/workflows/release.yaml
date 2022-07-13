@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "IMAGE=$(cat ko.images)" >> $GITHUB_ENV
 
-      - uses: strongjz/actions/vul-scans@5fb3931a28583cdb2e660463585dc142696755de
+      - uses: strongjz/actions/vul-scans@bb6f24ae375579d91a6619a4993df9dbbfac1edf
         id: scans
         with:
           registry: ghcr.io
@@ -77,9 +77,9 @@ jobs:
           echo "Image Vulnerability scan output" >> $GITHUB_STEP_SUMMARY
           echo "Image ID: ${{ env.IMAGE }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Snyk Count: $${{ env.SNYK_COUNT }}" >> $GITHUB_STEP_SUMMARY
-          echo "Grype Count: $${{ env.GRYPE_COUNT }}" >> $GITHUB_STEP_SUMMARY
-          echo "Trivy Count: $${{ env.TRIVY_COUNT }}" >> $GITHUB_STEP_SUMMARY
+          echo "Snyk Count: $SNYK_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "Grype Count: $GRYPE_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "Trivy Count: $TRIVY_COUNT" >> $GITHUB_STEP_SUMMARY
 
       - if: ${{ steps.scans.outputs.TRIVY_COUNT != '0' || steps.scans.outputs.GRYPE_COUNT != '0' || steps.scans.outputs.SNYK_COUNT != '0'  }}
         uses: rtCamp/action-slack-notify@12e36fc18b0689399306c2e0b3e0f2978b7f1ee7
