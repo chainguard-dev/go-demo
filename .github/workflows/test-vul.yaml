@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Scans
-        uses: strongjz/actions/vul-scans@bb6f24ae375579d91a6619a4993df9dbbfac1edf
+        uses: strongjz/actions/vul-scans@5470c5c46275f16e7b646bdaa64c5bccdc52b852
         id: scans
         with:
           registry: ghcr.io
