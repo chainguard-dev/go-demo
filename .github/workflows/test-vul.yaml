@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        images: [ "nginx:1.19", "vulhub/nginx:1.13.2", "vulhub/activemq:5.11.1" ]
+        images: [ "ghcr.io/chainguard-dev/nginx:1.19", "ghcr.io/chainguard-dev/vulhub/nginx:1.13.2", "ghcr.io/chainguard-dev/vulhub/activemq:5.11.1" ]
 
     permissions:
       contents: read
