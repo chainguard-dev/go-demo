@@ -1,3 +1,5 @@
+name: Test vulnerability findings
+
 on:
   workflow_dispatch:
   push:
@@ -5,7 +7,6 @@ on:
 
 
 jobs:
-
   example_matrix:
     strategy:
       matrix:
