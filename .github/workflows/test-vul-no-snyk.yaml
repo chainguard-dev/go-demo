@@ -1,4 +1,4 @@
-name: Test vulnerability findings
+name: Test vulnerability findings w/ no snyk
 
 on:
   workflow_dispatch:
@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - name: Run Scans
-      uses: strongjz/actions/vul-scans@60a3b119d5d630b33732877930ef4e377577cf10
+      uses: strongjz/actions/vul-scans@9341cc444b8d7dd98a3b4a784e6652d2a44b5c27
       id: scans
       with:
         registry: ghcr.io
