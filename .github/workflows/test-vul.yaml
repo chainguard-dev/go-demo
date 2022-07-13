@@ -58,7 +58,7 @@ jobs:
           Snyk Count: ${{ steps.scans.outputs.SNYK_COUNT }}
           Grype Count: ${{ steps.scans.outputs.GRYPE_COUNT }}
           Trivy Count: ${{ steps.scans.outputs.TRIVY_COUNT }}
-          Image ID: ${{ env.IMAGE }}
+          Image ID: ${{ matrix.images }}
           For detailed logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
     - name: Post to slack when things fail.
