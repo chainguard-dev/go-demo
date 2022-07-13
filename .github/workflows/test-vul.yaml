@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run Scans
-        uses: strongjz/actions/vul-scans@5470c5c46275f16e7b646bdaa64c5bccdc52b852
+        uses: strongjz/actions/vul-scans@db12e75299a71cacdf710ee3f1aae1ba87f94793
         id: scans
         with:
           registry: ghcr.io
@@ -22,7 +22,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           image: ${{ matrix.images }}
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          UPLOAD_GITHUB_CODE: true
+          SNYK_RUN: "true"
+          UPLOAD_GITHUB_CODE: "true"
 
       - name: Image Vunability scan output
         env:
