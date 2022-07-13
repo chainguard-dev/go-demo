@@ -3,11 +3,14 @@ name: Test vulnerability findings
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        images: [ "nginx:1.19", "vulhub/nginx:1.13.2", "vulhub/activemq:5.11.1" ]
+
     permissions:
       contents: read
       packages: write
@@ -22,7 +25,7 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-        image: "nginx:1.19"
+        image: ${{ matrix.images }}
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         RUN_SNYK: "true"
         UPLOAD_GITHUB_CODE: "true"
@@ -75,4 +78,3 @@ jobs:
         SLACK_TITLE: Releasing ${{ github.repository }} failed.
         SLACK_MESSAGE: |
           For detailed logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
- 
