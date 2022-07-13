@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - name: Run Scans
-      uses: strongjz/actions/vul-scans@05c40bc0d9dfa4c6cc7f8a77407b654bcae694cb
+      uses: strongjz/actions/vul-scans@f1a357a54214a81f5b75c4ada8c3b1008cefad82
       id: scans
       with:
         registry: ghcr.io
