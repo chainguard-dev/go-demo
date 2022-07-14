@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "IMAGE=$(cat ko.images)" >> $GITHUB_ENV
 
-      - uses: strongjz/actions/vul-scans@6cc99b223b3cee396a910dfd074ba51e97e89f4d
+      - uses: strongjz/actions/vul-scans@6f30a33f8b1f9198ffeae6c99dced38e0c82c1de
         id: scans
         with:
           registry: ghcr.io
