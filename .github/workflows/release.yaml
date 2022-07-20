@@ -58,7 +58,7 @@ jobs:
         run: |
           echo "IMAGE=$(cat ko.images)" >> $GITHUB_ENV
 
-      - uses: strongjz/actions/vul-scans@ab2f29fa41e5e0745ac317f06588ecfb7b204f9c
+      - uses: strongjz/distroless-actions/vul-scans@8867839d4eaacdb88b6d48838f5432b2a5f0263b
         id: scans
         with:
           registry: ghcr.io
@@ -67,6 +67,8 @@ jobs:
           image: ${{ env.IMAGE }}
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           RUN_SNYK: "true"
+          RUN_GRYPE: "true"
+          RUN_TRIVY: "true"
           UPLOAD_GITHUB_CODE: "true"
 
       - name: Image Vunability scan output
