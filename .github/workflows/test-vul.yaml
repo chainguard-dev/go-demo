@@ -18,18 +18,18 @@ jobs:
       security-events: write
 
     steps:
-      - uses: strongjz/distroless-actions/vul-scans@cosign-update
-        id: scans
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          image: ${{ env.IMAGE }}
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          RUN_SNYK: "true"
-          RUN_GRYPE: "true"
-          RUN_TRIVY: "true"
-          UPLOAD_GITHUB_CODE: "true"
+    - uses: strongjz/distroless-actions/vul-scans@cosign-update
+      id: scans
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        image: ${{ env.IMAGE }}
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        RUN_SNYK: "true"
+        RUN_GRYPE: "true"
+        RUN_TRIVY: "true"
+        UPLOAD_GITHUB_CODE: "true"
 
     - name: Image Vunability scan output
       env:
