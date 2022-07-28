@@ -18,7 +18,7 @@ jobs:
       security-events: write
 
     steps:
-    - uses: strongjz/distroless-actions/vul-scans@cosign-update
+    - uses: distroless/actions/vul-scans@main
       id: scans
       with:
         registry: ghcr.io
